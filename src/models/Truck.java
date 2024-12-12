@@ -2,6 +2,8 @@ package models;
 
 import exceptions.StateException;
 import states.OnBase;
+import states.OnRepair;
+import states.OnRoute;
 import states.State;
 
 public class Truck {
@@ -25,7 +27,23 @@ public class Truck {
     private String state;
 
     private transient State stateObj;
-
+    private void initStateObj() {
+        switch (state) {
+            case "On Base":
+                stateObj = new OnBase();
+                break;
+            case "On route":
+                stateObj = new OnRoute();
+                break;
+            case "On repair":
+                stateObj = new OnRepair();
+                break;
+            default:
+                stateObj = new OnBase();
+                state = "On Base";
+                break;
+        }
+    }
     @Override
     public String toString() {
         return String.format("%-12s : %s%n%-12s : %s%n%-12s : %s%n%-12s : %s%n", "#", id, "Truck", name, "Driver", driver, "Truck state", state);
